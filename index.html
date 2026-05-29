@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de IMC</title>
+    <style>
+        /* Início da folha de estilos interna (CSS) para dar visual à página */
+        body {
+            font-family: Arial, sans-serif;
+            /* Define a fonte do texto para o padrão Arial */
+            background-color: #f4f4f9;
+            /* Define uma cor de fundo cinza bem clara para a tela */
+            display: flex;
+            /* Utiliza o modelo Flexbox para alinhar os elementos */
+            justify-content: center;
+            /* Centraliza o conteúdo horizontalmente na tela */
+            align-items: center;
+            /* Centraliza o conteúdo verticalmente na tela */
+            height: 100vh;
+            /* Define que a altura da tela inteira será usada para o alinhamento */
+            margin: 0;
+            /* Remove as margens padrões do navegador */
+        }
+
+        .container {
+            background-color: white;
+            /* Define a cor de fundo da caixinha como branca */
+            padding: 25px;
+            /* Cria um espaço interno de 25 pixels entre o texto e a borda da caixinha */
+            border-radius: 10px;
+            /* Arredonda os cantos da caixinha */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            /* Cria uma sombra suave atrás da caixinha */
+            width: 300px;
+            /* Define uma largura fixa de 300 pixels para a caixinha */
+        }
+
+        h2 {
+            text-align: center;
+            /* Centraliza o título "Calculadora de IMC" */
+            color: #333;
+            /* Define a cor do título para um cinza escuro */
+        }
+
+        label {
+            font-weight: bold;
+            /* Deixa o texto das etiquetas (Peso e Altura) em negrito */
+            display: block;
+            /* Faz a etiqueta ocupar a linha toda, empurrando o campo de texto para baixo */
+            margin-top: 15px;
+            /* Adiciona um espaço acima de cada etiqueta */
+        }
+
+        input {
+            width: 100%;
+            /* Faz o campo de texto ocupar toda a largura disponível na caixinha */
+            padding: 8px;
+            /* Adiciona um espaçamento interno para o texto digitado não colar na borda */
+            margin-top: 5px;
+            /* Cria um espaço entre a etiqueta e o campo de texto */
+            border: 1px solid #ccc;
+            /* Cria uma borda fina cinza ao redor do campo */
+            border-radius: 5px;
+            /* Arredonda levemente os cantos do campo de texto */
+            box-sizing: border-box;
+            /* Garante que o padding não aumente o tamanho final do campo */
+        }
+
+        button {
+            width: 100%;
+            /* Faz o botão ocupar toda a largura disponível */
+            background-color: #28a745;
+            /* Define a cor de fundo do botão como verde */
+            color: white;
+            /* Define a cor do texto do botão como branca */
+            border: none;
+            /* Remove a borda padrão do botão */
+            padding: 10px;
+            /* Cria um espaço interno no botão, deixando-o mais "gordinho" */
+            margin-top: 20px;
+            /* Espaço entre o último campo e o botão */
+            border-radius: 5px;
+            /* Arredonda os cantos do botão */
+            cursor: pointer;
+            /* Transforma a seta do mouse em uma "mãozinha" ao passar pelo botão */
+            font-size: 16px;
+            /* Aumenta o tamanho da letra do botão */
+        }
+
+        button:hover {
+            background-color: #218838;
+            /* Escurece o verde do botão quando o usuário passa o mouse por cima */
+        }
+
+        #resultado {
+            margin-top: 20px;
+            /* Cria um espaço acima da área onde o resultado vai aparecer */
+            font-weight: bold;
+            /* Deixa o texto do resultado em negrito */
+            text-align: center;
+            /* Centraliza o texto do resultado */
+            font-size: 18px;
+            /* Aumenta o tamanho da letra do resultado */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Calculadora de IMC</h2> <label for="peso">Peso (kg):</label> <input type="number" id="peso" step="0.1"
+            placeholder="Ex: 70.5"> <label for="altura">Altura (m):</label> <input type="number" id="altura" step="0.01"
+            placeholder="Ex: 1.75"> <button onclick="calcularIMC()">Calcular</button>
+        <div id="resultado"></div>
+    </div>
+    <script> // Início do bloco de programação em JavaScript para dar lógica à página
+        function calcularIMC() { // Declaração da função que realiza o cálculo do IMC
+
+            // Busca o valor digitado no campo de peso e o converte para número decimal (Float)
+            const peso = parseFloat(document.getElementById('peso').value);
+
+            // Busca o valor digitado no campo de altura e o converte para número decimal (Float)
+            const altura = parseFloat(document.getElementById('altura').value);
+
+            // Cria uma variável apontando para o local na tela onde o resultado será exibido
+            const resultadoDiv = document.getElementById('resultado');
+
+            // Verifica se o usuário preencheu os campos corretamente (se são números válidos e maiores que zero)
+            if (isNaN(peso) || isNaN(altura) || peso <= 0 || altura <= 0) {
+                // Se algum dado estiver errado ou vazio, exibe um aviso em vermelho na tela
+                resultadoDiv.innerHTML = "<span style='color: red;'>Por favor, insira valores válidos!</span>";
+                return; // Interrompe a execução da função aqui para não calcular com dados errados
+            }
+
+            // Realiza a fórmula matemática do IMC: peso dividido pelo quadrado da altura
+            const imc = peso / (altura * altura);
+
+            // Cria uma variável vazia para guardar o texto da classificação (Abaixo do peso, normal, etc)
+            let classificacao = '';
+
+            // Inicia a estrutura de testes para classificar o resultado do IMC
+            if (imc < 18.5) {
+                classificacao = 'Abaixo do peso'; // Define a classificação se o IMC for menor que 18.5
+            } else if (imc >= 18.5 && imc < 25) {
+                classificacao = 'Peso normal'; // Define se o IMC estiver entre 18.5 e 24.9
+            } else if (imc >= 25 && imc < 30) {
+                classificacao = 'Sobrepeso'; // Define se o IMC estiver entre 25 e 29.9
+            } else {
+                classificacao = 'Obesidade'; // Define se o IMC for 30 ou maior
+            }
+
+            // Exibe na tela o IMC arredondado para duas casas decimais (.toFixed(2)) junto com a classificação
+            resultadoDiv.innerHTML = `Seu IMC é: ${imc.toFixed(2)}<br><span style='color: #28a745;'>(${classificacao})</span>`;
+        } // Fim da função calcularIMC()
+    </script>
+
+</body>
+
+</html>
